@@ -17,9 +17,9 @@ final cathegoryProvider = FutureProvider.autoDispose<List<String>?>((ref) {
 });
 
 final randomJokeProvider =
-    FutureProvider.autoDispose.family<Joke?, String>((ref, cathegory) {
+    FutureProvider.autoDispose.family<Joke?, String>((ref, cahegory) {
   final _api = ref.watch(chuckNorrisApi);
-  return _api.getAJoke(category: cathegory);
+  return _api.getAJoke(category: cahegory);
 });
 
 final jokeSearchProvider =
@@ -29,29 +29,9 @@ final jokeSearchProvider =
   final _random = Random();
   final jokeList = await _api.searchJokes(searchQuery: searchQuery);
   if (jokeList!.isNotEmpty) {
-    joke = jokeList[_random.nextInt(jokeList.length - 1)];
+    joke = jokeList[_random.nextInt(jokeList.length)];
   } else {
     joke = null;
   }
-  return joke;
-});
-
-final jokeListProvider = FutureProvider.autoDispose
-    .family<List<Joke>?, String>((ref, searchQuery) async {
-  final _api = ref.watch(chuckNorrisApi);
-  final jokeList = await _api.searchJokes(searchQuery: searchQuery);
-
-  return jokeList;
-});
-
-final queryProvider =
-    FutureProvider.family<Joke?, String>((ref, searchQuery) async {
-  Joke? joke;
-  final _random = Random();
-
-  final jokeList = ref.read(jokeListProvider(searchQuery)) as List;
-
-  joke = jokeList[_random.nextInt(jokeList.length - 1)];
-
   return joke;
 });

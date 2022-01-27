@@ -5,7 +5,7 @@ class SearchBar extends StatefulWidget {
   final Function(String)? onSubmitted;
   final Color? color;
 
-  SearchBar({Key? key, this.onTap, this.onSubmitted, this.color})
+  const SearchBar({Key? key, this.onTap, this.onSubmitted, this.color})
       : super(key: key);
 
   @override

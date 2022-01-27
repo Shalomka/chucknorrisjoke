@@ -14,8 +14,6 @@ class Home extends ConsumerWidget {
     final _cathegories = ref.watch(cathegoryProvider);
     final _flow = ref.watch(flowProvider);
 
-    final _test = ref.watch(queryProvider("test"));
-
     // generate list of joke Cathegories
     Widget _listCathegories() {
       return _cathegories.when(
