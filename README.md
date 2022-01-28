@@ -1,10 +1,9 @@
 # chucknorrisjoke
 
-A new Flutter project.
+These are my experiments with the Provider state management
+for Flutter and Chuck Norris Jokes archive.
 
 ## Getting Started
-
-This project is a starting point for a Flutter application.
 
 A few resources to get you started if this is your first Flutter project:
 
