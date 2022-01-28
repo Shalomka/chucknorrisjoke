@@ -112,11 +112,17 @@ class Home extends ConsumerWidget {
                 // call to action
                 height: 54,
                 child: Center(
-                  child: Text(
-                    (_flow == AppFlow.browse)
-                        ? "Or choose category"
-                        : "Search for a random joke",
-                    style: Theme.of(context).textTheme.bodyText2,
+                  child: AnimatedSwitcher(
+                    duration: const Duration(microseconds: 150),
+                    child: (_flow == AppFlow.browse)
+                        ? Text(
+                            "Or choose category",
+                            style: Theme.of(context).textTheme.bodyText2,
+                          )
+                        : Text(
+                            "Search for a random joke",
+                            style: Theme.of(context).textTheme.bodyText2,
+                          ),
                   ),
                 ),
               ),

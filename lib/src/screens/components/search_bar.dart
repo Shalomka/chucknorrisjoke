@@ -89,8 +89,9 @@ class _SearchBarState extends State<SearchBar> {
         onEditingComplete: () {
           if (_searchStringValidator(_controller.text) == null) {
             if (widget.onSubmitted != null) {
+              _controller.text = _controller.text.trimLeft().trimRight();
               _focusNode.unfocus();
-              widget.onSubmitted!(_controller.text.trimLeft().trimRight());
+              widget.onSubmitted!(_controller.text);
             }
           }
         },

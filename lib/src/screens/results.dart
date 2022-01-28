@@ -70,9 +70,7 @@ class Results extends ConsumerWidget {
                 Navigator.pop(context);
               },
               child: const SizedBox(
-                  width: 24,
-                  height: 24,
-                  child: const Icon(Icons.close, size: 24))),
+                  width: 24, height: 24, child: Icon(Icons.close, size: 24))),
           Text(
             "Random joke: " + _headerText,
             style: Theme.of(context).textTheme.headline2,
