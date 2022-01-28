@@ -100,33 +100,26 @@ class Results extends ConsumerWidget {
                   }
                 })));
 
-    return WillPopScope(
-      onWillPop: () async {
-        //switching to browsing flow if returning to previous screen
-        ref.read(flowProvider.state).state = AppFlow.browse;
-        return true;
-      },
-      child: Scaffold(
-        body: SafeArea(
-          child: Column(
-            children: [
-              _header,
-              const Image(
-                  image: AssetImage('assets/images/chuck-norris 1.png'),
-                  width: 68,
-                  height: 68),
-              Expanded(
-                  child: Container(
-                alignment: Alignment.topCenter,
-                width: 310,
-                padding: const EdgeInsets.symmetric(vertical: 23),
-                child: AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 150),
-                    child: _currentView ?? _loadingView()),
-              )),
-              _footer,
-            ],
-          ),
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
+          children: [
+            _header,
+            const Image(
+                image: AssetImage('assets/images/chuck-norris 1.png'),
+                width: 68,
+                height: 68),
+            Expanded(
+                child: Container(
+              alignment: Alignment.topCenter,
+              width: 310,
+              padding: const EdgeInsets.symmetric(vertical: 23),
+              child: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 150),
+                  child: _currentView ?? _loadingView()),
+            )),
+            _footer,
+          ],
         ),
       ),
     );

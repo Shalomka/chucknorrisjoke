@@ -57,7 +57,6 @@ class Home extends ConsumerWidget {
       // all joke cathegories again (browse flow).
       onTap: () {
         ref.read(flowProvider.state).state = AppFlow.browse;
-        FocusScope.of(context).requestFocus(FocusNode());
       },
       child: Scaffold(
         body: SafeArea(
@@ -91,7 +90,9 @@ class Home extends ConsumerWidget {
                 height: 54,
                 child: Center(
                   child: Text(
-                    "Or choose category",
+                    (_flow == AppFlow.browse)
+                        ? "Or choose category"
+                        : "Search for a random joke",
                     style: Theme.of(context).textTheme.bodyText2,
                   ),
                 ),

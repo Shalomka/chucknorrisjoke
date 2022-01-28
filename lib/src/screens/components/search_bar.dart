@@ -67,6 +67,7 @@ class _SearchBarState extends State<SearchBar> {
       child: TextField(
         controller: _controller,
         focusNode: _focusNode,
+        autofocus: false,
         autocorrect: false,
         maxLines: 1,
         decoration: InputDecoration(
