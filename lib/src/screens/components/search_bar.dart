@@ -15,20 +15,6 @@ class SearchBar extends StatefulWidget {
 class _SearchBarState extends State<SearchBar> {
   final _controller = TextEditingController();
   final _focusNode = FocusNode();
-  String hintText = 'Search for a random joke';
-
-  @override
-  void initState() {
-    _focusNode.addListener(() {
-      if (_focusNode.hasFocus) {
-        hintText = '';
-      } else {
-        hintText = 'Search for a random joke';
-      }
-      setState(() {});
-    });
-    super.initState();
-  }
 
   @override
   void dispose() {
@@ -40,6 +26,7 @@ class _SearchBarState extends State<SearchBar> {
   @override
   Widget build(BuildContext context) {
     final _color = widget.color ?? const Color(0x993C3C43);
+    const _labelText = 'Search for a random joke';
 
     _searchStringValidator(String? value) {
       if (value == null || value.isEmpty) {
@@ -71,35 +58,38 @@ class _SearchBarState extends State<SearchBar> {
         autocorrect: false,
         maxLines: 1,
         decoration: InputDecoration(
-            icon: SizedBox(
-                height: 26,
-                width: 26,
-                child: Icon(Icons.search, size: 26, color: _color)),
-            suffixIcon: SizedBox(
-              width: 26,
+          icon: SizedBox(
               height: 26,
-              child: IconButton(
-                  icon: Icon(Icons.cancel_sharp, size: 18, color: _color),
-                  onPressed: () => _controller.text = " "),
-            ),
-            border: InputBorder.none,
-            focusedBorder: InputBorder.none,
-            enabledBorder: InputBorder.none,
-            errorBorder: InputBorder.none,
-            disabledBorder: InputBorder.none,
-            contentPadding:
-                const EdgeInsets.only(left: -10, bottom: 0, top: 0, right: 8),
-            hintText: hintText),
+              width: 26,
+              child: Icon(Icons.search, size: 26, color: _color)),
+          suffixIcon: SizedBox(
+            width: 26,
+            height: 26,
+            child: IconButton(
+                icon: Icon(Icons.cancel_sharp, size: 18, color: _color),
+                onPressed: () => _controller.text = " "),
+          ),
+          border: InputBorder.none,
+          focusedBorder: InputBorder.none,
+          enabledBorder: InputBorder.none,
+          errorBorder: InputBorder.none,
+          disabledBorder: InputBorder.none,
+          labelText: _labelText,
+          floatingLabelBehavior: FloatingLabelBehavior.never,
+        ),
         style: Theme.of(context).textTheme.headline2?.copyWith(color: _color),
         cursorColor: _color,
         onTap: () {
-          if (widget.onTap != null) {
-            widget.onTap!();
+          if (!_focusNode.hasFocus) {
+            if (widget.onTap != null) {
+              widget.onTap!();
+            }
           }
         },
         onEditingComplete: () {
           if (_searchStringValidator(_controller.text) == null) {
             if (widget.onSubmitted != null) {
+              _focusNode.unfocus();
               widget.onSubmitted!(_controller.text.trimLeft().trimRight());
             }
           }

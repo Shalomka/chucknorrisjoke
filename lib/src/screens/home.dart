@@ -14,48 +14,68 @@ class Home extends ConsumerWidget {
     final _cathegories = ref.watch(cathegoryProvider);
     final _flow = ref.watch(flowProvider);
 
-    // generate list of joke Cathegories
-    Widget _listCathegories() {
-      return _cathegories.when(
-          data: (data) {
-            return Padding(
-              padding: const EdgeInsets.only(left: 39, right: 39, top: 16),
-              child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: 200,
-                      childAspectRatio: 156 / 66,
-                      crossAxisSpacing: 0,
-                      mainAxisSpacing: 0),
-                  itemCount: data!.length,
-                  itemBuilder: (context, index) {
-                    return CategoryTile(
-                      child: Text(
-                        data[index].capitalize(),
-                        style: Theme.of(context).textTheme.headline3,
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Results(
-                                    category: data[index].toString(),
-                                  )),
-                        );
-                      },
-                    );
-                  }),
-            );
-          },
-          error: (e, stack) => Center(
-                child: Text(e.toString()),
-              ),
-          loading: () => const SizedBox());
+    Widget? _currentView;
+
+    // preparing views for animated swicher and
+    // different states.
+    // emptyView is used both during search and
+    // during data load
+    _emptyView() => const SizedBox(key: ValueKey(1));
+    _errorView(String e) => Container(
+          key: const ValueKey(2),
+          alignment: Alignment.center,
+          child: Text(e),
+        );
+    _categoriesView(List<String> data) {
+      return Padding(
+        key: const ValueKey(3),
+        padding: const EdgeInsets.only(left: 39, right: 39, top: 16),
+        child: GridView.builder(
+            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: 200,
+                childAspectRatio: 156 / 66,
+                crossAxisSpacing: 0,
+                mainAxisSpacing: 0),
+            itemCount: data.length,
+            itemBuilder: (context, index) {
+              return CategoryTile(
+                child: Text(
+                  data[index].capitalize(),
+                  style: Theme.of(context).textTheme.headline3,
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Results(
+                              category: data[index].toString(),
+                            )),
+                  );
+                },
+              );
+            }),
+      );
     }
+
+    // switching views on data load
+    _cathegories.when(
+      data: (data) => _currentView = _categoriesView(data!),
+      error: (error, stackTrace) => _currentView = _errorView(error.toString()),
+      loading: () => _currentView = _emptyView(),
+    );
+
+    // swiching views on app flow
+    if (_flow == AppFlow.search) _currentView = _emptyView();
 
     return GestureDetector(
       // tap anywhere to leave search bar and see
       // all joke cathegories again (browse flow).
       onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.focusedChild?.unfocus();
+        }
+
         ref.read(flowProvider.state).state = AppFlow.browse;
       },
       child: Scaffold(
@@ -64,11 +84,13 @@ class Home extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(
+                  //header
                   height: 72,
                   child: Center(
                       child: Text("CHUCK NORRIS",
                           style: Theme.of(context).textTheme.headline1))),
               SizedBox(
+                  //searchbar
                   width: 300,
                   height: 36,
                   child: SearchBar(
@@ -87,6 +109,7 @@ class Home extends ConsumerWidget {
                     },
                   )),
               SizedBox(
+                // call to action
                 height: 54,
                 child: Center(
                   child: Text(
@@ -98,9 +121,11 @@ class Home extends ConsumerWidget {
                 ),
               ),
               Expanded(
-                  child: Visibility(
-                      visible: (_flow == AppFlow.browse) ? true : false,
-                      child: _listCathegories())),
+                  // main area
+                  child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 150),
+                child: _currentView,
+              )),
             ],
           ),
         ),
