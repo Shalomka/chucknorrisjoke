@@ -52,8 +52,14 @@ class Results extends ConsumerWidget {
     // when the data arives from the future provider, the coresponding
     // view is loaded into the _currentView
     _joke.when(
-        data: (data) => _jokeView(data),
-        error: (e, stackTrace) => _errorView(e.toString()),
+        data: (data) {
+          if (data != null) {
+            _jokeView(data);
+          } else {
+            _currentView = const Text("Ouch, unknown error");
+          }
+        },
+        error: (e, stackTrace) => _errorView("Connection Error"),
         loading: () => _loadingView());
 
     //results page header

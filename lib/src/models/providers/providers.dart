@@ -12,8 +12,12 @@ enum AppFlow {
 final flowProvider = StateProvider<AppFlow>((ref) => AppFlow.browse);
 
 final cathegoryProvider = FutureProvider.autoDispose<List<String>?>((ref) {
-  final _api = ref.watch(chuckNorrisApi);
-  return _api.getCategories();
+  try {
+    final _api = ref.watch(chuckNorrisApi);
+    return _api.getCategories();
+  } catch (e) {
+    rethrow;
+  }
 });
 
 final randomJokeProvider =
@@ -27,11 +31,15 @@ final jokeSearchProvider =
   Joke? joke;
   final _api = ref.watch(chuckNorrisApi);
   final _random = Random();
-  final jokeList = await _api.searchJokes(searchQuery: searchQuery);
-  if (jokeList!.isNotEmpty) {
-    joke = jokeList[_random.nextInt(jokeList.length)];
-  } else {
-    joke = null;
+  try {
+    final jokeList = await _api.searchJokes(searchQuery: searchQuery);
+    if (jokeList!.isNotEmpty) {
+      joke = jokeList[_random.nextInt(jokeList.length)];
+    } else {
+      joke = null;
+    }
+  } catch (e) {
+    rethrow;
   }
   return joke;
 });

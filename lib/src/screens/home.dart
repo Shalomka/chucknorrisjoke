@@ -59,8 +59,15 @@ class Home extends ConsumerWidget {
 
     // switching views on data load
     _cathegories.when(
-      data: (data) => _currentView = _categoriesView(data!),
-      error: (error, stackTrace) => _currentView = _errorView(error.toString()),
+      data: (data) {
+        if (data != null) {
+          _currentView = _categoriesView(data);
+        } else {
+          _currentView = const Text("Ouch, unknown error");
+        }
+      },
+      error: (error, stackTrace) =>
+          _currentView = _errorView("Connection Error"),
       loading: () => _currentView = _emptyView(),
     );
 

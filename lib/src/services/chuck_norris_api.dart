@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer' as developer;
 import 'package:chucknorrisjoke/src/models/joke.dart';
 import 'package:dio/dio.dart';
@@ -19,12 +18,11 @@ class ChuckNorrisApi {
       return (result.data as List<dynamic>).cast<String>();
     } on DioError catch (e) {
       if (e.response != null) {
-        developer.log(jsonEncode(e.response),
-            name: "Fetching Categories Error");
-        return null;
+        developer.log(e.response.toString(), name: "Fetching Categories Error");
+        rethrow;
       } else {
         developer.log(e.message, name: "Fetching Categories. Connection Error");
-        return null;
+        rethrow;
       }
     }
   }
@@ -39,10 +37,10 @@ class ChuckNorrisApi {
     } on DioError catch (e) {
       if (e.response != null) {
         developer.log(e.toString(), name: "Getting Joke Error");
-        return null;
+        rethrow;
       } else {
         developer.log(e.message, name: "Getting Joke. Connection Error");
-        return null;
+        rethrow;
       }
     }
   }
