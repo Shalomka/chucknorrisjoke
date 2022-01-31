@@ -1,7 +1,18 @@
 # chucknorrisjoke
 
-These are my experiments with the Provider state management
+These are my experiments with the Riverpod state management
 for Flutter and Chuck Norris Jokes archive.
+
+Riverpod seems to be more fun to work with, required less boilerplate and
+separates buisness logic better than other solutions. However, it is still
+very young and I would not recommend using it for the production.
+
+Besides, with the insane choice of different providers, suited for particular
+tasks and behaving diferrently I found refactoring somehow challenging.
+
+Said that, the team behind Riverpod is enormously productive and I expect
+much improved versions 2 and even 3 to be released soon. Untill then I move back
+to tryed and tested Provider.
 
 ## Getting Started
 
