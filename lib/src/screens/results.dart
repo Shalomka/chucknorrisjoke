@@ -56,7 +56,7 @@ class Results extends ConsumerWidget {
           if (data != null) {
             _jokeView(data);
           } else {
-            _currentView = const Text("Ouch, unknown error");
+            _currentView = const Text("No jokes found");
           }
         },
         error: (e, stackTrace) => _errorView("Connection Error"),
